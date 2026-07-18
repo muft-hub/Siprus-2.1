@@ -76,7 +76,7 @@ const MainContainer: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
-      {/* Top App Bar (Only visible if not on NotificationScreen to avoid double headers) */}
+      {/* Top App Bar */}
       {activeTab !== MainTab.NOTIFIKASI && (
         <View style={styles.topAppBar}>
           <View style={styles.topAppBarLeft}>
@@ -131,7 +131,7 @@ const MainContainer: React.FC = () => {
             <Text style={[styles.navLabel, activeTab === MainTab.BERANDA && styles.navLabelActive]}>Beranda</Text>
           </TouchableOpacity>
 
-          {/* Cari (Show only to Students & Guests) */}
+          {/* Cari */}
           {userRole !== Role.ADMIN_RT && userRole !== Role.KEPALA_RT && (
             <TouchableOpacity 
               style={styles.navItem} 
@@ -142,7 +142,7 @@ const MainContainer: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          {/* Riwayat (Students only) */}
+          {/* Riwayat */}
           {userRole === Role.MAHASISWA && (
             <TouchableOpacity 
               style={styles.navItem} 
@@ -153,7 +153,7 @@ const MainContainer: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          {/* Validasi (Admins only) */}
+          {/* Validasi */}
           {(userRole === Role.ADMIN_RT || userRole === Role.KEPALA_RT) && (
             <TouchableOpacity 
               style={styles.navItem} 
@@ -171,7 +171,7 @@ const MainContainer: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          {/* Laporan (Admins only) */}
+          {/* Laporan */}
           {(userRole === Role.ADMIN_RT || userRole === Role.KEPALA_RT) && (
             <TouchableOpacity 
               style={styles.navItem} 
@@ -182,7 +182,7 @@ const MainContainer: React.FC = () => {
             </TouchableOpacity>
           )}
 
-          {/* Master (Admins only) */}
+          {/* Master */}
           {(userRole === Role.ADMIN_RT || userRole === Role.KEPALA_RT) && (
             <TouchableOpacity 
               style={styles.navItem} 
