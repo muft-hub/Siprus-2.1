@@ -17,7 +17,7 @@ interface AppContextType {
   logout: () => Promise<void>;
   refreshData: () => Promise<void>;
   
-  createBooking: (ruangId: number, tanggal: string, waktuMulai: string, waktuSelesai: string, keperluan: string) => Promise<{ success: boolean; message: string }>;
+  createBooking: (data: { ruangId: number; tanggal: string; waktuMulai: string; waktuSelesai: string; keperluan: string; userId?: number }) => Promise<{ success: boolean; message: string }>;
   validateBooking: (id: number, action: "APPROVE" | "REJECT" | "REVISE" | "TRANSFER", alasan: string) => Promise<{ success: boolean; message: string }>;
   switchRoom: (id: number, newRuangId: number, alasan: string) => Promise<{ success: boolean; message: string }>;
   updateProfile: (name: string, email: string) => Promise<{ success: boolean; message: string }>;
@@ -140,15 +140,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUser(null);
   };
 
-  const createBooking = async (ruangId: number, tanggal: string, waktuMulai: string, waktuSelesai: string, keperluan: string) => {
+ // Perhatikan penambahan { } di dalam kurung parameter dan penggunaan tipe 'any' atau tipe data yang sesuai
+const createBooking = async ({ ruangId, tanggal, waktuMulai, waktuSelesai, keperluan }: any) => {
     try {
+      // Sekarang data dikirimkan dengan benar ke apiService
       const response = await apiService.createBooking({ ruangId, tanggal, waktuMulai, waktuSelesai, keperluan });
       await refreshData();
-      return { success: true, message: response.message || 'Reservasi berhasil diajukan!' };
+      return { success: true, message: response?.message || 'Reservasi berhasil diajukan!' };
     } catch (e: any) {
       return { success: false, message: e.response?.data?.message || 'Gagal membuat reservasi' };
     }
-  };
+};
 
   const validateBooking = async (id: number, action: "APPROVE" | "REJECT" | "REVISE" | "TRANSFER", alasan: string) => {
     try {

@@ -92,16 +92,27 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
       return;
     }
 
+    // 👇 --- MULAI TAMBAHKAN DEBUG CONSOLE DI SINI --- 👇
+    console.log("=== DEBUG DATA PAYLOAD FRONTEND ===");
+    console.log("ruangId      :", selectedRoomForBooking?.id);
+    console.log("tanggal      :", tanggal);
+    console.log("waktuMulai   :", waktuMulai);
+    console.log("waktuSelesai :", waktuSelesai);
+    console.log("keperluan    :", keperluan);
+    console.log("===================================");
+    // 👆 --------------------------------------------- 👆
+
     setIsSubmitting(true);
     try {
       await createBooking({
-        ruanganId: selectedRoomForBooking.id,
+        ruangId: selectedRoomForBooking?.id, 
         tanggal,
         waktuMulai,
         waktuSelesai,
         keperluan,
         userId: currentUser?.id || 0
       });
+      
       Alert.alert('Sukses', 'Berhasil melakukan reservasi ruangan!', [
         { text: 'OK', onPress: () => {
           setSelectedRoomForBooking(null);
@@ -113,7 +124,7 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }
 
   const filteredRuangan = ruanganList.filter(room => {
     const matchGedung = selectedGedungId === null || room.gedungId === selectedGedungId;
@@ -331,7 +342,7 @@ const styles = StyleSheet.create({
   modalTitle: { fontSize: 20, fontWeight: 'bold', textAlign: 'center', color: '#0F172A' },
   modalRoomName: { fontSize: 16, fontWeight: '600', textAlign: 'center', marginTop: 4, color: '#4F46E5', marginBottom: 16 },
   formLabel: { fontSize: 13, fontWeight: 'bold', color: '#475569', marginTop: 12, marginBottom: 6 },
-  formPickerButton: { borderText: 1, borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12, padding: 12, backgroundColor: '#F8FAFC', justifyContent: 'center' },
+  formPickerButton: { borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12, padding: 12, backgroundColor: '#F8FAFC', justifyContent: 'center' },
   formPickerText: { fontSize: 14, color: '#334155' },
   modalActionWrapper: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 24, gap: 12 },
   btnAction: { flex: 1, height: 48, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },

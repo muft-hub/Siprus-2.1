@@ -59,8 +59,8 @@ export const HistoryScreen: React.FC = () => {
           </View>
         ) : (
           filteredHistory.map(item => (
-            <BookingListItem key={item.id} item={item} />
-          ))
+  <BookingListItem key={item.id} item={item} isRiwayat={true} />
+))
         )}
       </ScrollView>
     </SafeAreaView>

@@ -1,32 +1,38 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Peminjaman } from '../types';
 import { StatusTag } from './StatusTag';
+import { generateSuratIzinPDF } from '../components/pdfGenerator';
 
 interface BookingListItemProps {
   item: Peminjaman;
+  isRiwayat?: boolean; 
 }
 
-export const BookingListItem: React.FC<BookingListItemProps> = ({ item }) => {
+export const BookingListItem: React.FC<BookingListItemProps> = ({ item, isRiwayat = false }) => {
+  // Mencegah error TypeScript secara paksa dengan mengecek beberapa kemungkinan nama properti
+  const namaRuangan = (item.ruang as any)?.nama || (item.ruang as any)?.namaRuangan || (item as any).namaRuangan || 'Fasilitas / Ruangan';
+  const detailKegiatan = (item as any).kegiatan || (item as any).keperluan || (item as any).tujuan || (item as any).agenda || (item as any).keterangan || 'Detail Kegiatan';
+
   return (
     <View style={styles.card}>
+      
+      {/* 1. BAGIAN HEADER (TAMPIL KEMBALI) */}
       <View style={styles.header}>
         <View style={styles.badgeContainer}>
-          <Text style={styles.badgeText}>{item.ruang?.kode || '-'}</Text>
+          <Text style={styles.badgeText}>RESERVASI</Text>
         </View>
         <StatusTag status={item.status} />
       </View>
 
-      <Text style={styles.roomName}>{item.ruang?.nama || 'Ruangan'}</Text>
+      {/* 2. BAGIAN NAMA RUANGAN (SUDAH DIPERBAIKI) */}
+      <Text style={styles.roomName}>{namaRuangan}</Text>
 
+      {/* 3. BAGIAN DETAIL KEGIATAN (KETERANGAN YANG HILANG SUDAH TAMPIL) */}
       <View style={styles.details}>
         <View style={styles.detailRow}>
-          <Text style={styles.detailLabel}>Pemohon: </Text>
-          <Text style={styles.detailValue}>{item.user?.name || 'Mahasiswa'}</Text>
-        </View>
-        <View style={styles.detailRow}>
-          <Text style={styles.detailLabel}>Keperluan: </Text>
-          <Text style={styles.detailValue}>"{item.keperluan}"</Text>
+          <Text style={styles.detailLabel}>Kegiatan: </Text>
+          <Text style={styles.detailValue}>{detailKegiatan}</Text> 
         </View>
       </View>
 
@@ -40,6 +46,16 @@ export const BookingListItem: React.FC<BookingListItemProps> = ({ item }) => {
         </View>
         <Text style={styles.idText}>ID: #{item.id}</Text>
       </View>
+
+      {/* 4. TOMBOL CETAK (HANYA DI RIWAYAT & JIKA DISETUJUI) */}
+      {isRiwayat && item.status === 'DISETUJUI' && (
+        <TouchableOpacity 
+          style={styles.printBtn} 
+          onPress={() => generateSuratIzinPDF(item)}
+        >
+          <Text style={styles.printBtnText}>📄 Cetak Surat Izin</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -121,5 +137,20 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     color: '#CBD5E1',
+  },
+  printBtn: {
+    marginTop: 12,
+    backgroundColor: '#ECFDF5',
+    borderWidth: 1,
+    borderColor: '#34D399',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  printBtnText: {
+    color: '#059669',
+    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
