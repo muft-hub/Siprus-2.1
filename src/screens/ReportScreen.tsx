@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { 
-  View, Text, StyleSheet, ScrollView, TextInput, 
-  TouchableOpacity, Alert, SafeAreaView, ActivityIndicator 
+  View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity, Alert, SafeAreaView, ActivityIndicator 
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useApp } from '../viewmodel/AppViewModel';
 import { BookingListItem } from '../components/BookingListItem';
+import Icon from '../components/AppIcon';
 
 export const ReportScreen: React.FC = () => {
   const { peminjamanList, gedungList, isLoading } = useApp();
@@ -14,6 +15,8 @@ export const ReportScreen: React.FC = () => {
   const [selectedGedungId, setSelectedGedungId] = useState<number | null>(null);
   const [startDate, setStartDate] = useState('2026-07-01');
   const [endDate, setEndDate] = useState('2026-07-31');
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
 
   const filteredList = peminjamanList.filter(item => {
     const matchSearch = !searchQuery || 
@@ -41,7 +44,10 @@ export const ReportScreen: React.FC = () => {
 
         {/* Quick Stats Summary Card */}
         <View style={styles.statsCard}>
-          <Text style={styles.statsCardTitle}>📊 Ringkasan Laporan</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="chart-bar" size={16} color="#1E293B" />
+            <Text style={[styles.statsCardTitle, { marginLeft: 8 }]}>Ringkasan Laporan</Text>
+          </View>
           <View style={styles.statsGrid}>
             <View style={styles.statCol}>
               <Text style={styles.statVal}>{peminjamanList.length}</Text>
@@ -57,16 +63,21 @@ export const ReportScreen: React.FC = () => {
         {/* Export Buttons */}
         <View style={styles.exportRow}>
           <TouchableOpacity style={[styles.exportBtn, styles.excelBtn]} onPress={() => handleExport('Excel')}>
-            <Text style={styles.exportBtnText}>🟢 Ekspor Excel</Text>
+            <Icon name="file-excel-box" size={14} color="#FFFFFF" />
+            <Text style={[styles.exportBtnText, { marginLeft: 8 }]}>Ekspor Excel</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.exportBtn, styles.pdfBtn]} onPress={() => handleExport('PDF')}>
-            <Text style={styles.exportBtnText}>🔴 Ekspor PDF</Text>
+            <Icon name="file-pdf-box" size={14} color="#FFFFFF" />
+            <Text style={[styles.exportBtnText, { marginLeft: 8 }]}>Ekspor PDF</Text>
           </TouchableOpacity>
         </View>
 
         {/* Filter Section */}
         <View style={styles.filterSection}>
-          <Text style={styles.filterTitle}>🔍 Filter Laporan</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="magnify" size={16} color="#1E293B" />
+            <Text style={[styles.filterTitle, { marginLeft: 8 }]}>Filter Laporan</Text>
+          </View>
           
           <TextInput
             style={styles.input}
@@ -78,13 +89,45 @@ export const ReportScreen: React.FC = () => {
           <View style={styles.formRow}>
             <View style={{ flex: 1, marginRight: 8 }}>
               <Text style={styles.label}>Dari Tanggal:</Text>
-              <TextInput style={styles.input} value={startDate} onChangeText={setStartDate} placeholder="YYYY-MM-DD" />
+              <TouchableOpacity style={styles.dateInput} onPress={() => setShowStartPicker(true)}>
+                <Text style={styles.dateInputText}>{startDate}</Text>
+              </TouchableOpacity>
             </View>
             <View style={{ flex: 1, marginLeft: 8 }}>
               <Text style={styles.label}>Sampai Tanggal:</Text>
-              <TextInput style={styles.input} value={endDate} onChangeText={setEndDate} placeholder="YYYY-MM-DD" />
+              <TouchableOpacity style={styles.dateInput} onPress={() => setShowEndPicker(true)}>
+                <Text style={styles.dateInputText}>{endDate}</Text>
+              </TouchableOpacity>
             </View>
           </View>
+          {showStartPicker && (
+            <DateTimePicker
+              value={new Date(startDate)}
+              mode="date"
+              display="calendar"
+              onChange={(event, selectedDate) => {
+                setShowStartPicker(false);
+                if (selectedDate) {
+                  const formatted = selectedDate.toISOString().split('T')[0];
+                  setStartDate(formatted);
+                }
+              }}
+            />
+          )}
+          {showEndPicker && (
+            <DateTimePicker
+              value={new Date(endDate)}
+              mode="date"
+              display="calendar"
+              onChange={(event, selectedDate) => {
+                setShowEndPicker(false);
+                if (selectedDate) {
+                  const formatted = selectedDate.toISOString().split('T')[0];
+                  setEndDate(formatted);
+                }
+              }}
+            />
+          )}
 
           <Text style={styles.label}>Gedung:</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalChips}>
@@ -184,6 +227,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
     marginHorizontal: 4,
   },
   excelBtn: {
@@ -221,6 +265,19 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     color: '#0F172A',
     backgroundColor: '#F8FAFC',
+  },
+  dateInput: {
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    backgroundColor: '#F8FAFC',
+    justifyContent: 'center',
+  },
+  dateInputText: {
+    fontSize: 14,
+    color: '#0F172A',
   },
   formRow: {
     flexDirection: 'row',

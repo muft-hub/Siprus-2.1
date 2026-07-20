@@ -4,6 +4,7 @@ import {
   Image, ScrollView, Switch, ActivityIndicator, Alert, SafeAreaView 
 } from 'react-native';
 import { useApp } from '../viewmodel/AppViewModel';
+import Icon from '../components/AppIcon';
 import { Role } from '../types';
 
 interface LoginScreenProps {
@@ -59,7 +60,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLoginSuccess }) => {
 
         {/* Logo and title */}
         <View style={styles.logoRow}>
-          <Text style={styles.appTitle}>🔑 UNIROOM UNIMUS</Text>
+          <Icon name="key-outline" size={20} color="#FFFFFF" />
+          <Text style={[styles.appTitle, { marginLeft: 8 }]}>UNIROOM UNIMUS</Text>
         </View>
 
         <Text style={styles.slogan}>

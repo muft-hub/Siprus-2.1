@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ruangan } from '../types';
+import Icon from './AppIcon';
 
 interface RoomCardProps {
   ruangan: Ruangan;
@@ -24,7 +25,10 @@ export const RoomCard: React.FC<RoomCardProps> = ({ ruangan, onClick }) => {
 
         <View style={styles.footer}>
           <Text style={styles.infoText}>Kode: {ruangan.kode} • Lantai: {ruangan.lantai}</Text>
-          <Text style={styles.capacity}>👥 {ruangan.kapasitas}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Icon name="account-group-outline" size={14} color="#3B82F6" />
+            <Text style={[styles.capacity, { marginLeft: 6 }]}>{ruangan.kapasitas}</Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>

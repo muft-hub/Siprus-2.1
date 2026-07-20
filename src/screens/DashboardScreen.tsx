@@ -1,8 +1,9 @@
 import React from 'react';
 import { 
   View, Text, StyleSheet, ScrollView, RefreshControl, 
-  TouchableOpacity, SafeAreaView, Dimensions 
+  TouchableOpacity, SafeAreaView 
 } from 'react-native';
+import Icon from '../components/AppIcon';
 import { useApp } from '../viewmodel/AppViewModel';
 import { BookingListItem } from '../components/BookingListItem';
 import { Role, PeminjamanStatus } from '../types';
@@ -43,7 +44,10 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigateToBo
 
           {userRole === Role.MAHASISWA && (
             <TouchableOpacity style={styles.pinjamBtn} onPress={onNavigateToBooking}>
-              <Text style={styles.pinjamBtnText}>➕ PINJAM RUANGAN</Text>
+              <View style={styles.pinjamBtnContent}>
+                <Icon name="plus-circle-outline" size={16} color="#1E293B" />
+                <Text style={styles.pinjamBtnText}> PINJAM RUANGAN</Text>
+              </View>
             </TouchableOpacity>
           )}
         </View>
@@ -51,26 +55,29 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigateToBo
         {/* Metric Grid */}
         <View style={styles.metricRow}>
           <View style={styles.metricCard}>
-            <Text style={[styles.metricIcon, { color: '#3B82F6' }]}>📄</Text>
+            <Icon name="file-document-outline" size={18} color="#3B82F6" style={styles.metricIcon} />
             <Text style={styles.metricVal}>{totalPeminjaman}</Text>
             <Text style={styles.metricLabel}>TOTAL</Text>
           </View>
 
           <View style={styles.metricCard}>
-            <Text style={[styles.metricIcon, { color: '#F59E0B' }]}>⏳</Text>
+            <Icon name="clock-outline" size={18} color="#F59E0B" style={styles.metricIcon} />
             <Text style={styles.metricVal}>{pendingPeminjaman}</Text>
             <Text style={styles.metricLabel}>PENDING</Text>
           </View>
 
           <View style={styles.metricCard}>
-            <Text style={[styles.metricIcon, { color: '#10B981' }]}>✅</Text>
+            <Icon name="check-circle-outline" size={18} color="#10B981" style={styles.metricIcon} />
             <Text style={styles.metricVal}>{approvedPeminjaman}</Text>
             <Text style={styles.metricLabel}>SETUJU</Text>
           </View>
         </View>
 
         {/* Section header */}
-        <Text style={styles.sectionHeader}>⚡ Reservasi Terbaru</Text>
+        <View style={styles.sectionHeaderRow}>
+          <Icon name="lightning-bolt-outline" size={16} color="#0F172A" />
+          <Text style={styles.sectionHeader}> Reservasi Terbaru</Text>
+        </View>
 
         {peminjamanList.length === 0 ? (
           <View style={styles.emptyCard}>
@@ -138,6 +145,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 20,
   },
+  pinjamBtnContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   pinjamBtnText: {
     color: '#1E293B',
     fontSize: 12,
@@ -162,7 +173,6 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   metricIcon: {
-    fontSize: 18,
     marginBottom: 6,
   },
   metricVal: {
@@ -176,11 +186,16 @@ const styles = StyleSheet.create({
     color: '#64748B',
     marginTop: 2,
   },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
   sectionHeader: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#0F172A',
-    marginBottom: 12,
+    marginLeft: 6,
   },
   emptyCard: {
     backgroundColor: '#FFFFFF',

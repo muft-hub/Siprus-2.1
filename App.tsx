@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { 
-  View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar 
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { AppProvider, useApp } from './src/viewmodel/AppViewModel';
+import Icon from './src/components/AppIcon';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { DashboardScreen } from './src/screens/DashboardScreen';
 import { BookingScreen } from './src/screens/BookingScreen';
@@ -73,7 +73,7 @@ const MainContainer: React.FC = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <StatusBar barStyle="dark-content" backgroundColor="#FFFFFF" />
 
       {/* Top App Bar */}
@@ -81,7 +81,7 @@ const MainContainer: React.FC = () => {
         <View style={styles.topAppBar}>
           <View style={styles.topAppBarLeft}>
             <View style={styles.logoCircle}>
-              <Text style={styles.logoText}>🏢</Text>
+              <Icon name="bank-outline" size={16} color="#FFFFFF" />
             </View>
             <Text style={styles.topAppTitle}>UNIROOM</Text>
           </View>
@@ -91,14 +91,14 @@ const MainContainer: React.FC = () => {
               style={[styles.topBtn, activeTab === MainTab.PANDUAN && styles.topBtnActive]} 
               onPress={() => setActiveTab(MainTab.PANDUAN)}
             >
-              <Text style={[styles.topBtnIcon, activeTab === MainTab.PANDUAN && styles.topBtnIconActive]}>📖</Text>
+              <Icon name="book-open-outline" size={16} color={activeTab === MainTab.PANDUAN ? '#FFFFFF' : '#475569'} />
             </TouchableOpacity>
 
             <TouchableOpacity 
-              style={[styles.topBtn, activeTab === MainTab.NOTIFIKASI && styles.topBtnActive]} 
+              style={styles.topBtn} 
               onPress={() => setActiveTab(MainTab.NOTIFIKASI)}
             >
-              <Text style={[styles.topBtnIcon, activeTab === MainTab.NOTIFIKASI && styles.topBtnIconActive]}>🔔</Text>
+              <Icon name="bell-outline" size={16} color="#475569" />
               {unreadNotificationsCount > 0 && (
                 <View style={styles.badge}>
                   <Text style={styles.badgeText}>{unreadNotificationsCount > 9 ? '9+' : unreadNotificationsCount}</Text>
@@ -107,7 +107,7 @@ const MainContainer: React.FC = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.topBtn} onPress={logout}>
-              <Text style={styles.topBtnIcon}>🚪</Text>
+              <Icon name="logout" size={16} color="#475569" />
             </TouchableOpacity>
           </View>
         </View>
@@ -127,7 +127,7 @@ const MainContainer: React.FC = () => {
             style={styles.navItem} 
             onPress={() => setActiveTab(MainTab.BERANDA)}
           >
-            <Text style={[styles.navIcon, activeTab === MainTab.BERANDA && styles.navIconActive]}>🏠</Text>
+            <Icon name="home-outline" size={20} color={activeTab === MainTab.BERANDA ? '#4F46E5' : '#64748B'} />
             <Text style={[styles.navLabel, activeTab === MainTab.BERANDA && styles.navLabelActive]}>Beranda</Text>
           </TouchableOpacity>
 
@@ -137,8 +137,8 @@ const MainContainer: React.FC = () => {
               style={styles.navItem} 
               onPress={() => setActiveTab(MainTab.CARI)}
             >
-              <Text style={[styles.navIcon, activeTab === MainTab.CARI && styles.navIconActive]}>🔍</Text>
-              <Text style={[styles.navLabel, activeTab === MainTab.CARI && styles.navLabelActive]}>Cari</Text>
+                <Icon name="magnify" size={20} color={activeTab === MainTab.CARI ? '#4F46E5' : '#64748B'} />
+                <Text style={[styles.navLabel, activeTab === MainTab.CARI && styles.navLabelActive]}>Cari</Text>
             </TouchableOpacity>
           )}
 
@@ -148,8 +148,8 @@ const MainContainer: React.FC = () => {
               style={styles.navItem} 
               onPress={() => setActiveTab(MainTab.RIWAYAT)}
             >
-              <Text style={[styles.navIcon, activeTab === MainTab.RIWAYAT && styles.navIconActive]}>📄</Text>
-              <Text style={[styles.navLabel, activeTab === MainTab.RIWAYAT && styles.navLabelActive]}>Riwayat</Text>
+                <Icon name="file-document-outline" size={20} color={activeTab === MainTab.RIWAYAT ? '#4F46E5' : '#64748B'} />
+                <Text style={[styles.navLabel, activeTab === MainTab.RIWAYAT && styles.navLabelActive]}>Riwayat</Text>
             </TouchableOpacity>
           )}
 
@@ -160,7 +160,7 @@ const MainContainer: React.FC = () => {
               onPress={() => setActiveTab(MainTab.VALIDASI)}
             >
               <View>
-                <Text style={[styles.navIcon, activeTab === MainTab.VALIDASI && styles.navIconActive]}>✅</Text>
+                <Icon name="check-circle-outline" size={20} color={activeTab === MainTab.VALIDASI ? '#4F46E5' : '#64748B'} />
                 {pendingCount > 0 && (
                   <View style={styles.navBadge}>
                     <Text style={styles.navBadgeText}>{pendingCount}</Text>
@@ -177,8 +177,8 @@ const MainContainer: React.FC = () => {
               style={styles.navItem} 
               onPress={() => setActiveTab(MainTab.LAPORAN)}
             >
-              <Text style={[styles.navIcon, activeTab === MainTab.LAPORAN && styles.navIconActive]}>📊</Text>
-              <Text style={[styles.navLabel, activeTab === MainTab.LAPORAN && styles.navLabelActive]}>Laporan</Text>
+                <Icon name="chart-bar" size={20} color={activeTab === MainTab.LAPORAN ? '#4F46E5' : '#64748B'} />
+                <Text style={[styles.navLabel, activeTab === MainTab.LAPORAN && styles.navLabelActive]}>Laporan</Text>
             </TouchableOpacity>
           )}
 
@@ -188,8 +188,8 @@ const MainContainer: React.FC = () => {
               style={styles.navItem} 
               onPress={() => setActiveTab(MainTab.MASTER)}
             >
-              <Text style={[styles.navIcon, activeTab === MainTab.MASTER && styles.navIconActive]}>🗄️</Text>
-              <Text style={[styles.navLabel, activeTab === MainTab.MASTER && styles.navLabelActive]}>Master</Text>
+                <Icon name="database" size={20} color={activeTab === MainTab.MASTER ? '#4F46E5' : '#64748B'} />
+                <Text style={[styles.navLabel, activeTab === MainTab.MASTER && styles.navLabelActive]}>Master</Text>
             </TouchableOpacity>
           )}
 
@@ -198,7 +198,7 @@ const MainContainer: React.FC = () => {
             style={styles.navItem} 
             onPress={() => setActiveTab(MainTab.PROFIL)}
           >
-            <Text style={[styles.navIcon, activeTab === MainTab.PROFIL && styles.navIconActive]}>👤</Text>
+            <Icon name="account-circle-outline" size={20} color={activeTab === MainTab.PROFIL ? '#4F46E5' : '#64748B'} />
             <Text style={[styles.navLabel, activeTab === MainTab.PROFIL && styles.navLabelActive]}>Profil</Text>
           </TouchableOpacity>
 
@@ -210,9 +210,11 @@ const MainContainer: React.FC = () => {
 
 export default function App() {
   return (
-    <AppProvider>
-      <MainContainer />
-    </AppProvider>
+    <SafeAreaProvider>
+      <AppProvider>
+        <MainContainer />
+      </AppProvider>
+    </SafeAreaProvider>
   );
 }
 
@@ -222,11 +224,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   topAppBar: {
-    height: 56,
+    minHeight: 56,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    paddingTop: 10,
     backgroundColor: '#FFFFFF',
     borderBottomWidth: 1,
     borderBottomColor: '#F1F5F9',

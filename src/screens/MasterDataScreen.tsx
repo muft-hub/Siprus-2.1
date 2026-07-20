@@ -4,6 +4,7 @@ import {
   TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, SafeAreaView 
 } from 'react-native';
 import { useApp } from '../viewmodel/AppViewModel';
+import Icon from '../components/AppIcon';
 import { apiService } from '../api/apiService';
 
 export const MasterDataScreen: React.FC = () => {
@@ -117,7 +118,8 @@ export const MasterDataScreen: React.FC = () => {
         style={styles.addBtn}
         onPress={() => activeTab === 0 ? setAddGedungVisible(true) : setAddRuanganVisible(true)}
       >
-        <Text style={styles.addBtnText}>➕ Tambah {activeTab === 0 ? "Gedung" : "Ruangan"}</Text>
+        <Icon name="plus-circle-outline" size={16} color="#FFFFFF" />
+        <Text style={[styles.addBtnText, { marginLeft: 8 }]}>Tambah {activeTab === 0 ? "Gedung" : "Ruangan"}</Text>
       </TouchableOpacity>
 
       <ScrollView
@@ -139,7 +141,7 @@ export const MasterDataScreen: React.FC = () => {
                   <Text style={styles.codeBadgeText}>{g.kode}</Text>
                 </View>
               </View>
-              <Text style={styles.cardDesc}>📍 Lokasi: {g.lokasi || '-'}</Text>
+              <Text style={styles.cardDesc}><Icon name="map-marker-outline" size={14} color="#64748B" />{'  '}Lokasi: {g.lokasi || '-'}</Text>
             </View>
           ))
         ) : (
@@ -153,9 +155,9 @@ export const MasterDataScreen: React.FC = () => {
                     <Text style={styles.codeBadgeText}>{r.kode}</Text>
                   </View>
                 </View>
-                <Text style={styles.cardDesc}>🏢 {gName} • Lantai {r.lantai}</Text>
-                <Text style={styles.cardDesc}>👥 Kapasitas: {r.kapasitas} orang • Jenis: {r.jenis}</Text>
-                {r.fasilitas && <Text style={[styles.cardDesc, { fontStyle: 'italic' }]}>📺 Fasilitas: {r.fasilitas}</Text>}
+                <Text style={styles.cardDesc}><Icon name="office-building" size={14} color="#64748B" />{'  '}{gName} • Lantai {r.lantai}</Text>
+                <Text style={styles.cardDesc}><Icon name="account-group-outline" size={14} color="#64748B" />{'  '}Kapasitas: {r.kapasitas} orang • Jenis: {r.jenis}</Text>
+                {r.fasilitas && <Text style={[styles.cardDesc, { fontStyle: 'italic' }]}><Icon name="television" size={14} color="#64748B" />{'  '}Fasilitas: {r.fasilitas}</Text>}
               </View>
             );
           })
@@ -312,6 +314,8 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 12,
     paddingVertical: 14,
+    paddingHorizontal: 18,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },

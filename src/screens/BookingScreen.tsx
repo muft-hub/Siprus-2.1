@@ -8,6 +8,7 @@ import { RoomCard } from '../components/RoomCard';
 import { Role, Ruangan } from '../types';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
+import Icon from '../components/AppIcon';
 import SwipeModal from 'react-native-modal';
 
 // Konfigurasi Bahasa Indonesia
@@ -92,7 +93,7 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
       return;
     }
 
-    // 👇 --- MULAI TAMBAHKAN DEBUG CONSOLE DI SINI --- 👇
+    // --- MULAI TAMBAHKAN DEBUG CONSOLE DI SINI ---
     console.log("=== DEBUG DATA PAYLOAD FRONTEND ===");
     console.log("ruangId      :", selectedRoomForBooking?.id);
     console.log("tanggal      :", tanggal);
@@ -100,7 +101,7 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
     console.log("waktuSelesai :", waktuSelesai);
     console.log("keperluan    :", keperluan);
     console.log("===================================");
-    // 👆 --------------------------------------------- 👆
+    // ---------------------------------------------
 
     setIsSubmitting(true);
     try {
@@ -163,7 +164,10 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
         
         {/* --- FILTER SECTION --- */}
         <View style={styles.filterSection}>
-          <TextInput style={styles.searchInput} placeholder="🔍 Cari nama ruangan..." value={searchKeyword} onChangeText={setSearchKeyword} />
+          <View style={styles.searchRow}>
+            <Icon name="magnify" size={18} color="#94A3B8" />
+            <TextInput style={[styles.searchInput, styles.searchInputWithIcon]} placeholder="Cari nama ruangan..." value={searchKeyword} onChangeText={setSearchKeyword} />
+          </View>
           
           <Text style={styles.filterLabel}>Gedung:</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalChips} nestedScrollEnabled={true}>
@@ -198,8 +202,14 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
              bookingsForSelectedDate.map((b: any, i: number) => (
                <View key={i} style={styles.eventCard}>
                  <View style={styles.eventCardHeader}><Text style={styles.eventRoomName}>{getRoomName(b.ruanganId)}</Text><View style={styles.eventStatusBadge}><Text style={styles.eventStatusText}>{b.status}</Text></View></View>
-                 <Text style={styles.eventTime}>⏰ {b.waktuMulai} - {b.waktuSelesai} WIB</Text>
-                 <Text style={styles.eventNotes}>📝 {b.keperluan}</Text>
+                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Icon name="clock-outline" size={14} color="#334155" />
+                   <Text style={[styles.eventTime, { marginLeft: 6 }]}>{b.waktuMulai} - {b.waktuSelesai} WIB</Text>
+                 </View>
+                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 6 }}>
+                   <Icon name="note-outline" size={14} color="#64748B" />
+                   <Text style={[styles.eventNotes, { marginLeft: 6 }]}>{b.keperluan}</Text>
+                 </View>
                </View>
              ))}
           </ScrollView>
@@ -217,19 +227,28 @@ export const BookingScreen: React.FC<{ onNavigateToHistory: () => void }> = ({ o
                {/* Input Tanggal */}
                <Text style={styles.formLabel}>Tanggal Peminjaman</Text>
                <TouchableOpacity style={styles.formPickerButton} onPress={() => setShowDatePicker(true)}>
-                 <Text style={styles.formPickerText}>📆 {tanggal}</Text>
+                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Icon name="calendar-blank-outline" size={16} color="#334155" />
+                   <Text style={[styles.formPickerText, { marginLeft: 8 }]}>{tanggal}</Text>
+                 </View>
                </TouchableOpacity>
 
                {/* Input Waktu Mulai */}
                <Text style={styles.formLabel}>Waktu Mulai</Text>
                <TouchableOpacity style={styles.formPickerButton} onPress={() => setShowStartTimePicker(true)}>
-                 <Text style={styles.formPickerText}>⏰ {waktuMulai} WIB</Text>
+                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Icon name="clock-outline" size={16} color="#334155" />
+                   <Text style={[styles.formPickerText, { marginLeft: 8 }]}>{waktuMulai} WIB</Text>
+                 </View>
                </TouchableOpacity>
 
                {/* Input Waktu Selesai */}
                <Text style={styles.formLabel}>Waktu Selesai</Text>
                <TouchableOpacity style={styles.formPickerButton} onPress={() => setShowEndTimePicker(true)}>
-                 <Text style={styles.formPickerText}>⏰ {waktuSelesai} WIB</Text>
+                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                   <Icon name="clock-outline" size={16} color="#334155" />
+                   <Text style={[styles.formPickerText, { marginLeft: 8 }]}>{waktuSelesai} WIB</Text>
+                 </View>
                </TouchableOpacity>
 
                {/* Input Keperluan */}
@@ -314,6 +333,8 @@ const styles = StyleSheet.create({
   title: { fontSize: 22, fontWeight: 'bold', color: '#0F172A', marginBottom: 16 },
   filterSection: { backgroundColor: '#FFFFFF', borderRadius: 16, padding: 16, marginBottom: 20 },
   searchInput: { borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12, padding: 12, backgroundColor: '#F8FAFC', fontSize: 14, color: '#334155' },
+  searchRow: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderColor: '#E2E8F0', borderRadius: 12, padding: 12, backgroundColor: '#F8FAFC' },
+  searchInputWithIcon: { borderWidth: 0, padding: 0, marginLeft: 8, flex: 1 },
   filterLabel: { fontSize: 12, fontWeight: 'bold', color: '#475569', marginTop: 12, marginBottom: 6 },
   horizontalChips: { flexDirection: 'row' },
   chip: { backgroundColor: '#F1F5F9', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20, marginRight: 8, height: 32, justifyContent: 'center' },

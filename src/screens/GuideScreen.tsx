@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, SafeAreaView } from 'react-native';
+import Icon from '../components/AppIcon';
 
 export const GuideScreen: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0); // 0: Alur Kerja, 1: Aturan, 2: Kontak
@@ -55,18 +56,32 @@ export const GuideScreen: React.FC = () => {
 
           {activeTab === 1 && (
             <View style={styles.ruleList}>
-              <Text style={styles.ruleItem}>🟢 Dilarang membawa makanan/minuman berbau menyengat ke dalam ruangan.</Text>
-              <Text style={styles.ruleItem}>🟢 Wajib menjaga kebersihan dan kerapian kursi setelah pemakaian.</Text>
-              <Text style={styles.ruleItem}>🟢 Pastikan AC, lampu, dan proyektor telah dimatikan saat meninggalkan ruangan.</Text>
-              <Text style={styles.ruleItem}>🟢 Gunakan ruangan sesuai dengan durasi waktu yang telah disetujui.</Text>
+              <View style={{ marginBottom: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}><Icon name="checkbox-marked-circle-outline" size={16} color="#10B981" /><Text style={[styles.ruleItem, { marginLeft: 8 }]}>Dilarang membawa makanan/minuman berbau menyengat ke dalam ruangan.</Text></View>
+              </View>
+              <View style={{ marginBottom: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}><Icon name="checkbox-marked-circle-outline" size={16} color="#10B981" /><Text style={[styles.ruleItem, { marginLeft: 8 }]}>Wajib menjaga kebersihan dan kerapian kursi setelah pemakaian.</Text></View>
+              </View>
+              <View style={{ marginBottom: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}><Icon name="checkbox-marked-circle-outline" size={16} color="#10B981" /><Text style={[styles.ruleItem, { marginLeft: 8 }]}>Pastikan AC, lampu, dan proyektor telah dimatikan saat meninggalkan ruangan.</Text></View>
+              </View>
+              <View style={{ marginBottom: 8 }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}><Icon name="checkbox-marked-circle-outline" size={16} color="#10B981" /><Text style={[styles.ruleItem, { marginLeft: 8 }]}>Gunakan ruangan sesuai dengan durasi waktu yang telah disetujui.</Text></View>
+              </View>
             </View>
           )}
 
           {activeTab === 2 && (
             <View style={styles.contactList}>
               <Text style={styles.contactTitle}>BIRO RUMAH TANGGA UNIMUS</Text>
-              <Text style={styles.contactItem}>📞 Ext. 204 (Lantai 2 GKB Rektorat)</Text>
-              <Text style={styles.contactItem}>✉️ bauk@unimus.ac.id</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                <Icon name="phone-outline" size={16} color="#1E293B" />
+                <Text style={[styles.contactItem, { marginLeft: 8 }]}>Ext. 204 (Lantai 2 GKB Rektorat)</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon name="email-outline" size={16} color="#1E293B" />
+                <Text style={[styles.contactItem, { marginLeft: 8 }]}>bauk@unimus.ac.id</Text>
+              </View>
             </View>
           )}
         </View>

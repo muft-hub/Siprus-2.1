@@ -4,6 +4,7 @@ import {
   TouchableOpacity, Alert, SafeAreaView, ActivityIndicator 
 } from 'react-native';
 import { useApp } from '../viewmodel/AppViewModel';
+import Icon from '../components/AppIcon';
 import { Role } from '../types';
 
 interface ProfileScreenProps {
@@ -85,7 +86,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogoutSuccess })
 
         {isGuest ? (
           <View style={styles.guestBanner}>
-            <Text style={styles.guestIcon}>⚠️</Text>
+            <Icon name="alert-circle-outline" size={28} color="#92400E" />
             <Text style={styles.guestTitle}>Mode Penelusuran (Guest)</Text>
             <Text style={styles.guestText}>
               Sesi Guest hanya diizinkan untuk melihat ketersediaan ruangan. Untuk melakukan peminjaman, silakan login menggunakan akun Mahasiswa.
@@ -166,9 +167,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogoutSuccess })
               style={[styles.outlineBtn, isSettingsMode && { backgroundColor: '#F1F5F9' }]}
               onPress={() => setIsSettingsMode(!isSettingsMode)}
             >
-              <Text style={styles.outlineBtnText}>
-                {isSettingsMode ? 'Kembali' : '⚙️ Pengaturan Akun'}
-              </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon name="cog-outline" size={16} color="#1E293B" />
+                <Text style={[styles.outlineBtnText, { marginLeft: 8 }]}>{isSettingsMode ? 'Kembali' : 'Pengaturan Akun'}</Text>
+              </View>
             </TouchableOpacity>
           )}
 
@@ -177,8 +179,9 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ onLogoutSuccess })
             onPress={handleLogout}
           >
             <Text style={styles.primaryBtnText}>
-              {isGuest ? 'LOGIN AKUN MAHASISWA' : '🚪 KELUAR APLIKASI'}
+              {isGuest ? 'LOGIN AKUN MAHASISWA' : 'KELUAR APLIKASI'}
             </Text>
+            {!isGuest && <Icon name="logout" size={16} color="#FFFFFF" style={{ position: 'absolute', right: 16 }} />}
           </TouchableOpacity>
         </View>
 

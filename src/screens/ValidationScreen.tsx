@@ -4,6 +4,7 @@ import {
   TouchableOpacity, Modal, TextInput, Alert, ActivityIndicator, SafeAreaView 
 } from 'react-native';
 import { useApp } from '../viewmodel/AppViewModel';
+import Icon from '../components/AppIcon';
 import { BookingListItem } from '../components/BookingListItem';
 import { PeminjamanStatus, Role, Peminjaman } from '../types';
 
@@ -139,7 +140,7 @@ export const ValidationScreen: React.FC = () => {
       >
         {displayList.length === 0 ? (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyIcon}>🎉</Text>
+            <Icon name="check-circle-outline" size={48} color="#94A3B8" />
             <Text style={styles.emptyText}>Tidak ada data antrean validasi.</Text>
           </View>
         ) : (
